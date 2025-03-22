@@ -24,7 +24,7 @@ int main() {
     char *nomes[] = {"Alice", "Bob", "Carol"}; // Array de strings
     int i;
     // Uma estrutura de repetição para pecorres todos os valores
-    for(i = 0; i < 3; i++) { // 
+    for(i = 0; i < 3; i++) { // o for tem que ter o mesmo tamano do vetor, não pode ter menos 
         printf("%s\n", nomes[i]);
     }
  
