@@ -21,14 +21,14 @@ int main() {
         }
     }
 
-    // Posiciona um navio horizontal de tamanho 3
+    // Posiciona um navio horizontal com tamanho de 3 espaços
     int linhaHorizontal = 2; // Define a linha onde o navio horizontal será posicionado
     int colunaHorizontal = 3; // Define a coluna inicial onde o navio horizontal será posicionado
     for (int i = 0; i < 3; ++i) { // Loop para posicionar as 3 partes do navio
         tabuleiro[linhaHorizontal][colunaHorizontal + i] = '3'; // Coloca o caractere '3' nas células correspondentes ao navio horizontal
     }
 
-    // Posiciona um navio vertical de tamanho 3
+    // Posiciona um navio vertical com tamanho de 3 espaços
     int linhaVertical = 5; // Define a linha inicial onde o navio vertical será posicionado
     int colunaVertical = 1; // Define a coluna onde o navio vertical será posicionado
     for (int i = 0; i < 3; ++i) { // Loop para posicionar as 3 partes do navio
