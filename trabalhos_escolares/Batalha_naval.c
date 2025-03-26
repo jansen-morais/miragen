@@ -1,3 +1,6 @@
+/* Optei por continuar com o esquelto do codigo que comecei o desafio, e so adcionar as novas formas.
+tentando colocalas o mais legiveis possivel, dentro do tabuleiro de 10x10 */
+
 #include <stdio.h> // Inclui a biblioteca padrão de entrada e saída para usar funções como printf
 
 // Função para calcular o valor absoluto de um inteiro
@@ -43,40 +46,40 @@ int main() {
         tabuleiro[linhaVertical + i][colunaVertical] = '3'; // Coloca o caractere '3' nas células correspondentes ao navio vertical
     }
 
-    // Posiciona a primeira sequência diagonal de 3 espaços usando loops aninhados
-    int linhaDiag1 = 0;
-    int colunaDiag1 = 7;
-    for (int i = 0; i < 3; ++i) {
+    // Posiciona o navio diagonal de 3 espaços usando loops aninhados
+    int linhaDiag1 = 0; // Define a linha onde o navio diagonal será posicionado
+    int colunaDiag1 = 7; // Define a coluna onde o navio diagonal será posicionado
+    for (int i = 0; i < 3; ++i) { // Loop para posicionar as 3 partes do navio
         for (int j = 0; j < 1; ++j) { // Loop interno que roda apenas uma vez
             tabuleiro[linhaDiag1 + i][colunaDiag1 - i] = '3'; // faz com que a coluna retroceda a cada iteração do loop externo.
         }
     }
 
-    // Posiciona a segunda sequência diagonal de 3 espaços começando na linha 5 usando loops aninhados
-    int linhaDiag2 = 5;
-    int colunaDiag2 = 0;
-    for (int i = 0; i < 3; ++i) {
+    // Posiciona o navio diagonal de 3 espaços começando na linha 5 usando loops aninhados
+    int linhaDiag2 = 5; // Define a linha onde o navio diagonal será posicionado
+    int colunaDiag2 = 0; // Define a coluna onde o navio diagonal será posicionado
+    for (int i = 0; i < 3; ++i) { // Loop para posicionar as 3 partes do navio
         for (int j = 0; j < 1; ++j) { // executar a lógica de posicionamento do elemento atual da diagonal.
-            tabuleiro[linhaDiag2 + i][colunaDiag2 + i] = '3';
+            tabuleiro[linhaDiag2 + i][colunaDiag2 + i] = '3';  // faz com que a coluna retroceda a cada iteração do loop externo.
         }
     }
 
-    // Desenha a cruz usando loops aninhados
-    int linhaCruz = 3;
-    int colunaCruz = 2;
+    // Desenha a cruz 
+    int linhaCruz = 3;  // Define a linha onde a cruz será posicionado
+    int colunaCruz = 2; // Define a coluna onde a cruz será posicionado
     int tamanhoCruz = 2; // Metade do tamanho de cada braço da cruz
 
-    for (int i = -tamanhoCruz; i <= tamanhoCruz; ++i) {
-        for (int j = -tamanhoCruz; j <= tamanhoCruz; ++j) {
+    for (int i = -tamanhoCruz; i <= tamanhoCruz; ++i) { // Loop para posicionar as partes da cruz
+        for (int j = -tamanhoCruz; j <= tamanhoCruz; ++j) { // Loop para posicionar as partes da cruz
             if (i == 0 || j == 0) { // Verifica se está na linha ou coluna central
-                tabuleiro[linhaCruz + i][colunaCruz + j] = '3';
+                tabuleiro[linhaCruz + i][colunaCruz + j] = '3'; // Preenche a parte corespondente da cruz
             }
         }
     }
 
     // Desenha o losango
-    int linhaLosango = 5;
-    int colunaLosango = 4;
+    int linhaLosango = 5; // Define a linha onde o losango será posicionado
+    int colunaLosango = 4; // Define a coluna onde o losango será posicionado
     for (int i = 0; i < 5; ++i) { // Loop para percorrer as linhas do losango
         for (int j = 0; j < 3 - valorAbsoluto(2 - i); ++j) { // Loop para preencher as colunas do losango
             tabuleiro[linhaLosango + i][colunaLosango + 1 - j] = '3'; // Preenche a parte esquerda do losango
@@ -85,8 +88,8 @@ int main() {
     }
 
     // Desenha o cone 
-    int linhaCone = 2;
-    int colunaCone = 7;
+    int linhaCone = 2; // Define a linha onde o cone será posicionado
+    int colunaCone = 7; // Define a coluna onde o cone será posicionado
     for (int i = 0; i < 3; ++i) { // Loop para percorrer as linhas do cone
         for (int j = -i; j <= i; ++j) { // Loop para preencher as colunas do cone
             tabuleiro[linhaCone + i][colunaCone + j] = '3'; // Preenche as células do cone
