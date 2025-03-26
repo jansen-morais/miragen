@@ -34,35 +34,21 @@ int main() {
     for (int i = 0; i < 3; ++i) { // Loop para posicionar as 3 partes do navio
         tabuleiro[linhaVertical + i][colunaVertical] = '3'; // Coloca o caractere '3' nas células correspondentes ao navio vertical
     }
-    int linhaDiagonal = 0;
-    int linhaDiagonal2 = 1;
-    int linhaDiagonal3 = 2;
-    int colunaDiagonal = 7;
-    int colunaDiagonal2 = 6;
-    int colunaDiagonal3 = 5;
-    for (int i = 0; i < 1; i++) {
-        tabuleiro[linhaDiagonal + i][colunaDiagonal] = '3';
-        for (int j = 0; j < 1; j++) {
-            tabuleiro[linhaDiagonal2 + i][colunaDiagonal2] = '3';
-            for (int k = 0; k < 1; k++) {
-                tabuleiro[linhaDiagonal3 + i][colunaDiagonal3] = '3';
-            }
+    // Posiciona a primeira sequência diagonal de 3 espaços usando loops aninhados
+    int linhaDiag1 = 0;
+    int colunaDiag1 = 7;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 1; ++j) { // Loop interno que roda apenas uma vez
+            tabuleiro[linhaDiag1 + i][colunaDiag1 - i] = '3'; //  faz com que a coluna retroceda a cada iteração do loop externo.
         }
     }
 
-    int segundaLinhaDiagonal = 5;
-    int segundaLinhaDiagonal2 = 6;
-    int segundaLinhaDiagonal3 = 7;
-    int segundaColunaDiagonal = 0;
-    int segundaColunaDiagonal2 = 1;
-    int segundaColunaDiagonal3 = 2;
-    for (int i = 0; i < 1; i++) {
-        tabuleiro[segundaLinhaDiagonal + i][segundaColunaDiagonal] = '3';
-        for (int j = 0; j < 1; j++) {
-            tabuleiro[segundaLinhaDiagonal2 + i][segundaColunaDiagonal2] = '3';
-            for (int k = 0; k < 1; k++) {
-                tabuleiro[segundaLinhaDiagonal3 + i][segundaColunaDiagonal3] = '3';
-            }
+    // Posiciona a segunda sequência diagonal de 3 espaços começando na linha 5 usando loops aninhados
+    int linhaDiag2 = 5;
+    int colunaDiag2 = 0;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 1; ++j) { // executar a lógica de posicionamento do elemento atual da diagonal.
+            tabuleiro[linhaDiag2 + i][colunaDiag2 + i] = '3';
         }
     }
 
