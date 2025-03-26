@@ -22,18 +22,51 @@ int main() {
     }
 
     // Posiciona um navio horizontal com tamanho de 3 espaços
-    int linhaHorizontal = 3; // Define a linha onde o navio horizontal será posicionado
+    int linhaHorizontal = 4; // Define a linha onde o navio horizontal será posicionado
     int colunaHorizontal = 3; // Define a coluna inicial onde o navio horizontal será posicionado
     for (int i = 0; i < 3; ++i) { // Loop para posicionar as 3 partes do navio
         tabuleiro[linhaHorizontal][colunaHorizontal + i] = '3'; // Coloca o caractere '3' nas células correspondentes ao navio horizontal
     }
 
     // Posiciona um navio vertical com tamanho de 3 espaços
-    int linhaVertical = 5; // Define a linha inicial onde o navio vertical será posicionado
+    int linhaVertical = 7; // Define a linha inicial onde o navio vertical será posicionado
     int colunaVertical = 7; // Define a coluna onde o navio vertical será posicionado
     for (int i = 0; i < 3; ++i) { // Loop para posicionar as 3 partes do navio
         tabuleiro[linhaVertical + i][colunaVertical] = '3'; // Coloca o caractere '3' nas células correspondentes ao navio vertical
     }
+    int linhaDiagonal = 0;
+    int linhaDiagonal2 = 1;
+    int linhaDiagonal3 = 2;
+    int colunaDiagonal = 7;
+    int colunaDiagonal2 = 6;
+    int colunaDiagonal3 = 5;
+    for (int i = 0; i < 1; i++) {
+        tabuleiro[linhaDiagonal + i][colunaDiagonal] = '3';
+        for (int j = 0; j < 1; j++) {
+            tabuleiro[linhaDiagonal2 + i][colunaDiagonal2] = '3';
+            for (int k = 0; k < 1; k++) {
+                tabuleiro[linhaDiagonal3 + i][colunaDiagonal3] = '3';
+            }
+        }
+    }
+
+    int segundaLinhaDiagonal = 5;
+    int segundaLinhaDiagonal2 = 6;
+    int segundaLinhaDiagonal3 = 7;
+    int segundaColunaDiagonal = 0;
+    int segundaColunaDiagonal2 = 1;
+    int segundaColunaDiagonal3 = 2;
+    for (int i = 0; i < 1; i++) {
+        tabuleiro[segundaLinhaDiagonal + i][segundaColunaDiagonal] = '3';
+        for (int j = 0; j < 1; j++) {
+            tabuleiro[segundaLinhaDiagonal2 + i][segundaColunaDiagonal2] = '3';
+            for (int k = 0; k < 1; k++) {
+                tabuleiro[segundaLinhaDiagonal3 + i][segundaColunaDiagonal3] = '3';
+            }
+        }
+    }
+
+    
 
     // Imprime o tabuleiro
     imprimirTabuleiro(tabuleiro); // Chama a função para imprimir o tabuleiro com os navios posicionados
