@@ -4,6 +4,8 @@
 // funçoes que capacitam a leitura da string como rsposta 
 #include <stdarg.h>//paa lidar com a manipulação de argumentos variaveis
 #include <string.h> // Adicionado: Inclui a biblioteca string.h para usar strcmp()
+// Adção para corrigiro o problema do segundo loop
+#include <ctype.h> // Adicionado para a função tolower
 
 int main(){
     int escolhajogador, escolhacomputador; // Declara variáveis para escolha do jogador e do computador
@@ -27,6 +29,7 @@ int main(){
         printf("3. tesoura\n");
         printf("escolha: ");
         scanf("%d", &escolhajogador); // Lê a escolha do jogador
+        getchar();
         // A função scanf() lê um número inteiro do teclado e armazena em escolhajogador.
         // %d especifica que um número inteiro deve ser lido.
         // &escolhajogador fornece o endereço de memória onde o valor lido deve ser armazenado.
@@ -38,22 +41,23 @@ int main(){
     
         switch (escolhajogador) // Inicia um switch para verificar a escolha do jogador
         {
-        case 1: // Caso escolhajogador seja 1 (pedra)
-            printf("O jogador escolheu pedra\n");
-            break; // Sai do switch após executar este caso
-            // O comando break é essencial para evitar que a execução continue para os próximos casos.
-        case 2: // Caso escolhajogador seja 2 (papel)
-            printf("O jogador escolheu papel\n");
-            break; // Sai do switch após executar este caso
-        case 3: // Caso escolhajogador seja 3 (tesoura)
-            printf("O jogador escolheu tesoura\n");
-            break; // Sai do switch após executar este caso
-    
-        default: // Caso escolhajogador não corresponda a nenhum dos casos anteriores
-        printf("Opção invalida, tente novamente\n"); // Informa que a opção é inválida
-            //break; // Sai do switch após executar este caso
-        }
-        } while (escolhajogador != 1, 2, 3);
+            case 1: // Caso escolhajogador seja 1 (pedra)
+                printf("O jogador escolheu pedra\n");
+                break; // Sai do switch após executar este caso
+                // O comando break é essencial para evitar que a execução continue para os próximos casos.
+            case 2: // Caso escolhajogador seja 2 (papel)
+                printf("O jogador escolheu papel\n");
+                break; // Sai do switch após executar este caso
+            case 3: // Caso escolhajogador seja 3 (tesoura)
+                printf("O jogador escolheu tesoura\n");
+                break; // Sai do switch após executar este caso
+        
+            default: // Caso escolhajogador não corresponda a nenhum dos casos anteriores
+            printf("Opção invalida, tente novamente\n"); // Informa que a opção é inválida
+                break; // Sai do switch após executar este caso
+            }
+        } while (escolhajogador < 1 || escolhajogador > 3);
+        getchar();
         
         // O switch compara escolhajogador com cada caso.
         // Se houver correspondência, o código dentro do caso é executado.
@@ -86,7 +90,7 @@ int main(){
             printf("### Que pena, voçê perdeu! ###\n"); // Caso o jogador perca
 
             printf("Deseja jogar novamente?...\n");
-            getchar();
+            //getchar();
             scanf("%3s",&repetir);
             for (int i = 0; repetir[i]; i++){
                 repetir[i] = tolower(repetir[i]);
