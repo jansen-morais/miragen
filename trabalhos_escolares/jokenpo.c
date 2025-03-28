@@ -17,7 +17,9 @@ int main(){
     
     do
     {
-        printf("*** jogo de jokenpô ***\n\n"); // Imprime o título do jogo
+        do
+        {
+            printf("*** jogo de jokenpô ***\n\n"); // Imprime o título do jogo
         // printf() é uma função que envia uma string formatada para a saída padrão (tela).
         printf("Escolha a opção\n"); // Pede ao jogador para escolher uma opção
         printf("1. pedra\n");
@@ -48,9 +50,11 @@ int main(){
             break; // Sai do switch após executar este caso
     
         default: // Caso escolhajogador não corresponda a nenhum dos casos anteriores
-        printf("Opção invalida\n"); // Informa que a opção é inválida
-            break; // Sai do switch após executar este caso
+        printf("Opção invalida, tente novamente\n"); // Informa que a opção é inválida
+            //break; // Sai do switch após executar este caso
         }
+        } while (escolhajogador != 1, 2, 3);
+        
         // O switch compara escolhajogador com cada caso.
         // Se houver correspondência, o código dentro do caso é executado.
         // O break sai do switch após a execução do caso.
