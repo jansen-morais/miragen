@@ -341,70 +341,70 @@ void menu_ataque_rodada(Territorio* mapa) {
 // ------------------------------------------------------------------------------------------------
 // --- Funcao Principal (main) ---
 // ------------------------------------------------------------------------------------------------
-int main() {
-    // Inicializa o gerador de números aleatórios com o tempo atual (garante aleatoriedade).
-    srand(time(NULL)); 
-    
-    Territorio* mapa_territorios = NULL; // Ponteiro principal para o mapa.
-    int opcao = 0; 
+        int main() {
+            // Inicializa o gerador de números aleatórios com o tempo atual (garante aleatoriedade).
+            srand(time(NULL)); 
+            
+            Territorio* mapa_territorios = NULL; // Ponteiro principal para o mapa.
+            int opcao = 0; 
 
-    // 1. ALOCACAO DE MEMORIA E DEFINICAO DO TAMANHO
-    mapa_territorios = alocar_territorios();
-    
-    if (mapa_territorios == NULL) {
-        printf("Falha critica na alocacao de memoria. Encerrando o programa.\n");
-        return 1;
-    }
-    
-    // 2. CADASTRO DOS TERRITORIOS
-    cadastrar_territorios(mapa_territorios);
+            // 1. ALOCACAO DE MEMORIA E DEFINICAO DO TAMANHO
+            mapa_territorios = alocar_territorios();
+            
+            if (mapa_territorios == NULL) {
+                printf("Falha critica na alocacao de memoria. Encerrando o programa.\n");
+                return 1;
+            }
+            
+            // 2. CADASTRO DOS TERRITORIOS
+            cadastrar_territorios(mapa_territorios);
 
-    // 3. LOOP PRINCIPAL DO JOGO (Executa até que a opção de Saída seja escolhida)
-    do {
-        // Exibe o estado atual do jogo antes de cada turno.
-        exibir_territorios(mapa_territorios);
+            // 3. LOOP PRINCIPAL DO JOGO (Executa até que a opção de Saída seja escolhida)
+            do {
+                // Exibe o estado atual do jogo antes de cada turno.
+                exibir_territorios(mapa_territorios);
 
-        printf("\n==========================================\n");
-        printf("                RODADA \n");
-        printf("==========================================\n");
-        printf("O que voce gostaria de fazer?\n");
-        printf(" 1. Realizar um ataque\n");
-        printf(" 2. Sair do Jogo\n");
-        printf("Opcao: ");
+                printf("\n==========================================\n");
+                printf("                RODADA \n");
+                printf("==========================================\n");
+                printf("O que voce gostaria de fazer?\n");
+                printf(" 1. Realizar um ataque\n");
+                printf(" 2. Sair do Jogo\n");
+                printf("Opcao: ");
 
-        if (scanf("%d", &opcao) != 1) {
-            printf("Entrada invalida. Tente novamente.\n");
-            limpar_buffer();
-            opcao = 0; 
-            continue;
+                if (scanf("%d", &opcao) != 1) {
+                    printf("Entrada invalida. Tente novamente.\n");
+                    limpar_buffer();
+                    opcao = 0; 
+                    continue;
+                }
+                limpar_buffer();
+
+                switch (opcao) {
+                    case 1:
+                        menu_ataque_rodada(mapa_territorios); 
+                        break;
+                    case 2:
+                        printf("\nOpcao 'Sair' selecionada. Encerrando o jogo...\n");
+                        sleep(1);
+                        break;
+                    default:
+                        printf("\nOpcao invalida. Por favor, escolha 1 ou 2.\n");
+                        sleep(1);
+                        break;
+                }
+            } while (opcao != 2);
+
+            // 4. LIBERACAO DE MEMORIA (Etapa final crucial)
+            liberar_memoria(mapa_territorios);
+
+            // Mensagem de Encerramento final.
+            sleep(1.5);
+            printf("\n==========================================\n");
+            printf("            *****JOGO WAR***** \n");
+            printf("            Jogo Encerrado! \n");
+            printf("==========================================\n");
+
+            return 0; 
         }
-        limpar_buffer();
-
-        switch (opcao) {
-            case 1:
-                menu_ataque_rodada(mapa_territorios); 
-                break;
-            case 2:
-                printf("\nOpcao 'Sair' selecionada. Encerrando o jogo...\n");
-                sleep(1);
-                break;
-            default:
-                printf("\nOpcao invalida. Por favor, escolha 1 ou 2.\n");
-                sleep(1);
-                break;
-        }
-    } while (opcao != 2);
-
-    // 4. LIBERACAO DE MEMORIA (Etapa final crucial)
-    liberar_memoria(mapa_territorios);
-
-    // Mensagem de Encerramento final.
-    sleep(1.5);
-    printf("\n==========================================\n");
-    printf("             *****JOGO WAR***** \n");
-    printf("            Jogo Encerrado! \n");
-    printf("==========================================\n");
-
-    return 0; 
-}
 
