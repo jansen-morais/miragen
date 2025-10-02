@@ -31,6 +31,12 @@ int main() {
 
     // Mensagens iniciais para orientar o usuario.
     printf("==========================================\n");
+    printf("             *****JOGO WAR***** \n");
+    printf("==========================================\n");
+    sleep(2.0);
+
+
+    printf("==========================================\n");
     printf("  SISTEMA DE CADASTRO DE TERRITORIOS \n");
     printf("==========================================\n");
     sleep(1.5);
@@ -74,9 +80,11 @@ int main() {
     }
 
     // --- Laco de Exibicao de Dados ---
+    sleep(1.5);
     printf("==========================================\n");
     printf("  DADOS DOS TERRITORIOS CADASTRADOS \n");
     printf("==========================================\n");
+    sleep(1.5);
 
     // O laco 'for' se repete 5 vezes para exibir os dados de cada territorio.
     for (i = 0; i < NUM_TERRITORIOS; i++) {
@@ -87,6 +95,7 @@ int main() {
         printf("  Cor do Exercito: %s\n", territorios[i].cor);
         printf("  Tropas: %d\n", territorios[i].tropas);
         printf("---\n");
+        sleep(1.5);
     }
 
     return 0; // Indica que o programa terminou com sucesso.
