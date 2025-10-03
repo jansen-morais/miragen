@@ -99,13 +99,13 @@ Territorio* alocar_territorios() {
     Territorio* mapa = NULL; 
 
     printf("\n==========================================\n");
-    printf("             *****JOGO WAR***** \n");
-    printf("              Iniciando o Jogo! \n");
+    printf("             *****JOGO WAR***** \n");
+    printf("             Iniciando o Jogo! \n");
     printf("==========================================\n");
     sleep(2); 
 
     printf("==========================================\n");
-    printf("         SISTEMA DE CONFIGURACAO \n");
+    printf("         SISTEMA DE CONFIGURACAO \n");
     printf("==========================================\n");
 
     do {
@@ -166,7 +166,7 @@ void atribuirMissao(Jogador* jogador) {
  */
 void exibirMissao(const Jogador* jogador) {
     printf("\n==========================================\n");
-    printf("              SUA MISSAO  \n");
+    printf("             SUA MISSAO  \n");
     printf("==========================================\n");
     printf("Cor do Exercito: %s\n", jogador->cor);
     printf("Objetivo: %s\n", jogador->missao);
@@ -237,7 +237,7 @@ void cadastrar_territorios(Territorio* mapa) {
     int i;
     
     printf("==========================================\n");
-    printf("  SISTEMA DE CADASTRO DE TERRITORIOS \n");
+    printf("  SISTEMA DE CADASTRO DE TERRITORIOS \n");
     printf("==========================================\n");
     sleep(1); 
     printf("Iniciando o cadastro de %d territorios.\n\n", g_num_territorios);
@@ -281,7 +281,7 @@ void exibir_territorios(Territorio* mapa) {
     
     sleep(1);
     printf("\n==========================================\n");
-    printf("  DADOS DOS TERRITORIOS ATUAIS \n");
+    printf("  DADOS DOS TERRITORIOS ATUAIS \n");
     printf("==========================================\n");
     sleep(1); 
 
@@ -289,9 +289,9 @@ void exibir_territorios(Territorio* mapa) {
         Territorio* t = mapa + i; 
 
         printf("Territorio %d:\n", i + 1);
-        printf("  Nome: %s\n", t->nome);
-        printf("  Cor do Exercito: %s\n", t->cor);
-        printf("  Tropas: %d\n", t->tropas);
+        printf("  Nome: %s\n", t->nome);
+        printf("  Cor do Exercito: %s\n", t->cor);
+        printf("  Tropas: %d\n", t->tropas);
         printf("---\n");
         sleep(0.3); 
     }
@@ -496,7 +496,7 @@ int main() {
         exibir_territorios(mapa_territorios);
 
         printf("\n==========================================\n");
-        printf("                RODADA (%s) \n", jogador_principal.cor);
+        printf("                RODADA (%s) \n", jogador_principal.cor);
         printf("==========================================\n");
         printf("O que voce gostaria de fazer?\n");
         printf(" 1. Realizar um ataque\n");
@@ -528,7 +528,7 @@ int main() {
         // 5. VERIFICACAO DE VITORIA POR MISSAO (NOVO REQUISITO)
         if (verificarMissao(&jogador_principal, mapa_territorios) == 1) {
             printf("\n\n##################################################\n");
-            printf("#         O JOGADOR %s VENCEU O JOGO!        #\n", jogador_principal.cor);
+            printf("#          O JOGADOR %s VENCEU O JOGO!        #\n", jogador_principal.cor);
             printf("##################################################\n\n");
             opcao = 2; // Força a saída do loop do jogo.
         }
@@ -541,8 +541,8 @@ int main() {
     // Mensagem de Encerramento final.
     sleep(1.5);
     printf("\n==========================================\n");
-    printf("             *****JOGO WAR***** \n");
-    printf("             Jogo Encerrado! \n");
+    printf("            *****JOGO WAR***** \n");
+    printf("             Jogo Encerrado! \n");
     printf("==========================================\n");
 
     return 0; 
