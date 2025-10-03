@@ -148,12 +148,12 @@ void exibirMenuPrincipal() {
     printf("--------------------------------------------------------\n");
     sleep(1.5); //Da uma pausa no programa
     printf("--- Estrategias de Ordenacao ---\n");
-    printf("3. Ordenar por NOME (Bubble Sort)\n");
-    printf("4. Ordenar por TIPO (Insertion Sort)\n");
-    printf("5. Ordenar por PRIORIDADE (Selection Sort)\n");
+    printf("3. Ordenar por NOME (Classificação por bolha)\n");
+    printf("4. Ordenar por TIPO (Classificação de inserção)\n");
+    printf("5. Ordenar por PRIORIDADE (Ordenação por seleção)\n");
     printf("--------------------------------------------------------\n");
     sleep(1.5); //Da uma pausa no programa
-    printf("6. Buscar Componente-Chave (Busca Binaria por Nome)\n");
+    printf("6. Buscar Componente-Chave (Busca por Nome)\n");
     printf("0. Sair do Programa\n");
     printf("--------------------------------------------------------\n");
     sleep(1.5); //Da uma pausa no programa
