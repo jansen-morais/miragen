@@ -39,11 +39,11 @@ typedef struct Sala {
 
 // --- Protótipos das Funções ---
 
-// Funções Auxiliares
+// Funções Auxiliares de Gerenciamento do Jogo
 void limparBuffer();
-void inicializarHash(HashNode *tabela[]); // NOVO: Para resetar a hash
-Sala* montarMapa();                      // NOVO: Para criar o mapa em cada partida
-void popularHash(HashNode *tabela[]);    // NOVO: Para popular a hash em cada partida
+void inicializarHash(HashNode *tabela[]); 
+Sala* montarMapa();                      
+void popularHash(HashNode *tabela[]);    
 
 // Funções da Árvore de Salas (Mapa)
 Sala* criarSala(const char *nome, const char *pista);
@@ -66,7 +66,7 @@ PistaNode* explorarSalas(Sala *raiz, PistaNode *pistas_coletadas, HashNode *tabe
 void contarProvas(PistaNode *raiz, const char *acusacao, int *contador, HashNode *tabela_suspeitos[]);
 void verificarSuspeitoFinal(PistaNode *pistas_coletadas, HashNode *tabela_suspeitos[]);
 
-// --- Implementação das Funções Auxiliares (Mapa e Hash) ---
+// --- Implementação das Funções Auxiliares de Gerenciamento do Jogo ---
 
 /**
  * @brief Limpa o buffer de entrada (stdin) para evitar interferências em leituras subsequentes.
@@ -78,9 +78,11 @@ void limparBuffer() {
 
 /**
  * @brief Inicializa a tabela Hash, definindo todos os ponteiros como NULL.
+ * (Crucial para garantir um estado limpo antes de popular a tabela em um novo jogo).
  * @param tabela O array de ponteiros da tabela hash.
  */
 void inicializarHash(HashNode *tabela[]) {
+    // Itera sobre todos os índices e define o ponteiro inicial como nulo
     for (int i = 0; i < HASH_SIZE; i++) {
         tabela[i] = NULL;
     }
@@ -88,6 +90,7 @@ void inicializarHash(HashNode *tabela[]) {
 
 /**
  * @brief Monta o mapa da mansão (Árvore Binária) com todas as salas e pistas.
+ * (Esta função é chamada a cada novo jogo para recriar o mapa e as pistas estáticas.)
  *
  * @return O ponteiro para o Hall de Entrada (raiz da árvore).
  */
@@ -101,11 +104,11 @@ Sala* montarMapa() {
     
     // Nível 2
     Sala *biblioteca = criarSala("Biblioteca", "Livreto de viagem para Paris");
-    Sala *jardim = criarSala("Jardim", ""); // Sem pista
+    Sala *jardim = criarSala("Jardim", ""); // Sem pista neste nó
     Sala *dispensa = criarSala("Dispensa", "Pó branco misterioso");
     Sala *escritorio = criarSala("Escritorio", "Recibo de compra de veneno");
     
-    // Conexões
+    // Conexões (Estrutura de Árvore Binária)
     hall->esquerda = sala_estar;
     hall->direita = cozinha;
     
@@ -121,23 +124,23 @@ Sala* montarMapa() {
     
     dispensa->esquerda = criarSala("Porao", "Chave dourada antiga");
 
-    return hall; // Retorna a raiz
+    return hall; // Retorna a raiz da árvore
 }
 
 /**
  * @brief Popula a Tabela Hash com as associações Pista -> Suspeito.
+ * (Esta função é chamada a cada novo jogo para restaurar as associações.)
  * @param tabela O array de ponteiros da tabela hash.
  */
 void popularHash(HashNode *tabela[]) {
-    // Pistas e seus Suspeitos (Suspeitos: Charles, Diana, William, Kate)
-    // Nota: Charles, Diana e Kate têm 2 pistas cada, satisfazendo o critério de julgamento.
+    // Insere todas as associações pista-suspeito na Tabela Hash
     inserirNaHash(tabela, "Mancha de oleo no chao", "Charles");
     inserirNaHash(tabela, "Carta de amor rasgada", "Diana");
-    inserirNaHash(tabela, "Recibo de compra de veneno", "Charles");
+    inserirNaHash(tabela, "Recibo de compra de veneno", "Charles"); // Charles tem 2 provas
     inserirNaHash(tabela, "Pó branco misterioso", "William");
-    inserirNaHash(tabela, "Livreto de viagem para Paris", "Diana");
+    inserirNaHash(tabela, "Livreto de viagem para Paris", "Diana");  // Diana tem 2 provas
     inserirNaHash(tabela, "Faca de prata faltando", "Kate");
-    inserirNaHash(tabela, "Relogio de pulso quebrado", "Kate");
+    inserirNaHash(tabela, "Relogio de pulso quebrado", "Kate");      // Kate tem 2 provas
     inserirNaHash(tabela, "Chave dourada antiga", "William");
 }
 
@@ -145,7 +148,6 @@ void popularHash(HashNode *tabela[]) {
 
 /**
  * @brief Cria dinamicamente um novo cômodo (Sala) para o mapa.
- * (A alocação dinâmica é essencial para a estrutura de árvore.)
  *
  * @param nome O nome da sala.
  * @param pista O conteúdo da pista estática nesta sala.
@@ -156,7 +158,7 @@ Sala* criarSala(const char *nome, const char *pista) {
 
     if (novaSala == NULL) {
         perror("Erro ao alocar memoria para Sala");
-        exit(EXIT_FAILURE); // Encerra o programa em caso de falha grave
+        exit(EXIT_FAILURE);
     }
 
     // Inicializa os campos da Sala
@@ -174,7 +176,6 @@ Sala* criarSala(const char *nome, const char *pista) {
 
 /**
  * @brief Libera recursivamente a memória alocada para o mapa da mansão (Árvore de Salas).
- * (Libera a memória em ordem pós-ordem para evitar ponteiros pendurados.)
  * @param raiz O nó raiz da subárvore a ser liberada.
  */
 void liberarMapa(Sala *raiz) {
@@ -183,7 +184,7 @@ void liberarMapa(Sala *raiz) {
     liberarMapa(raiz->esquerda);
     liberarMapa(raiz->direita);
 
-    free(raiz); // Libera o nó atual
+    free(raiz); // Libera o nó atual em pós-ordem
 }
 
 // --- Implementação das Funções da Tabela Hash (Pista -> Suspeito) ---
@@ -198,14 +199,12 @@ int hash(const char *chave) {
     if (chave == NULL || chave[0] == '\0') {
         return 0;
     }
-    // Garante que a primeira letra seja minúscula para o cálculo
+    // Garante que o índice esteja dentro do limite HASH_SIZE
     return (tolower(chave[0]) - 'a') % HASH_SIZE;
 }
 
 /**
  * @brief Insere uma nova associação pista-suspeito na tabela hash.
- * (Usa encadeamento para resolver colisões.)
- *
  * @param tabela O array de ponteiros da tabela hash.
  * @param pista A chave (nome da pista).
  * @param suspeito O valor (nome do suspeito).
@@ -226,7 +225,7 @@ void inserirNaHash(HashNode *tabela[], const char *pista, const char *suspeito) 
     strncpy(novoNo->suspeito, suspeito, MAX_STR - 1);
     novoNo->suspeito[MAX_STR - 1] = '\0';
 
-    // Insere o novo nó no início da lista ligada (encadeamento)
+    // Insere no início da lista ligada (encadeamento para colisão)
     novoNo->proximo = tabela[index];
     tabela[index] = novoNo;
 }
@@ -242,15 +241,15 @@ const char* encontrarSuspeito(HashNode *tabela[], const char *pista) {
     int index = hash(pista);
     
     HashNode *atual = tabela[index];
-    // Percorre a lista ligada no índice
+    // Percorre a lista ligada
     while (atual != NULL) {
         if (strcmp(atual->pista, pista) == 0) {
-            return atual->suspeito; // Pista encontrada
+            return atual->suspeito; // Retorna o suspeito
         }
         atual = atual->proximo;
     }
 
-    return NULL; // Pista não encontrada
+    return NULL; // Não encontrado
 }
 
 /**
@@ -260,7 +259,7 @@ const char* encontrarSuspeito(HashNode *tabela[], const char *pista) {
 void liberarHash(HashNode *tabela[]) {
     for (int i = 0; i < HASH_SIZE; i++) {
         HashNode *atual = tabela[i];
-        // Percorre e libera a lista ligada em cada índice
+        // Libera cada nó na lista ligada
         while (atual != NULL) {
             HashNode *temp = atual;
             atual = atual->proximo;
@@ -274,7 +273,6 @@ void liberarHash(HashNode *tabela[]) {
 
 /**
  * @brief Cria dinamicamente um novo nó para armazenar uma pista.
- *
  * @param pista O conteúdo da pista.
  * @return Ponteiro para o novo PistaNode criado.
  */
@@ -285,7 +283,7 @@ PistaNode* criarPistaNode(const char *pista) {
         exit(EXIT_FAILURE);
     }
 
-    // Inicializa os campos
+    // Inicializa
     strncpy(novoNo->pista, pista, MAX_STR - 1);
     novoNo->pista[MAX_STR - 1] = '\0';
 
@@ -297,25 +295,23 @@ PistaNode* criarPistaNode(const char *pista) {
 
 /**
  * @brief Insere uma nova pista na Árvore Binária de Busca (BST) de forma recursiva.
- * (A BST garante a ordem alfabética das pistas.)
- *
  * @param raiz O nó raiz da subárvore atual.
  * @param pista O conteúdo da pista a ser inserida.
  * @return O nó raiz da subárvore atualizada.
  */
 PistaNode* inserirPista(PistaNode *raiz, const char *pista) {
     if (raiz == NULL) {
-        return criarPistaNode(pista);
+        return criarPistaNode(pista); // Caso base: insere aqui
     }
 
     int comparacao = strcmp(pista, raiz->pista);
 
     if (comparacao < 0) {
-        raiz->esquerda = inserirPista(raiz->esquerda, pista);
+        raiz->esquerda = inserirPista(raiz->esquerda, pista); // Vai para a esquerda
     } else if (comparacao > 0) {
-        raiz->direita = inserirPista(raiz->direita, pista);
+        raiz->direita = inserirPista(raiz->direita, pista);  // Vai para a direita
     }
-    // Ignora se for igual (não insere duplicatas)
+    // Se for igual, não faz nada (não insere duplicatas)
 
     return raiz;
 }
@@ -327,7 +323,7 @@ PistaNode* inserirPista(PistaNode *raiz, const char *pista) {
 void exibirPistas(PistaNode *raiz) {
     if (raiz != NULL) {
         exibirPistas(raiz->esquerda);
-        printf("  - %s\n", raiz->pista); // Processa (imprime) o nó
+        printf("  - %s\n", raiz->pista); // Imprime o nó
         exibirPistas(raiz->direita);
     }
 }
@@ -348,21 +344,22 @@ void liberarPistas(PistaNode *raiz) {
 /**
  * @brief Permite a navegação interativa do jogador pela árvore de salas e coleta de pistas.
  *
- * @param raiz O nó atual (inicialmente, o Hall de Entrada).
+ * @param raiz O nó atual (Hall de Entrada).
  * @param pistas_coletadas A raiz da BST de pistas coletadas.
- * @param tabela_suspeitos A tabela hash para identificar o suspeito da pista.
+ * @param tabela_suspeitos A tabela hash.
  * @return A raiz atualizada da BST de pistas coletadas.
  */
 PistaNode* explorarSalas(Sala *raiz, PistaNode *pistas_coletadas, HashNode *tabela_suspeitos[]) {
-    Sala *atual = raiz;
+    Sala *atual = raiz; // Inicia no Hall
     char escolha;
 
     printf("\n--- INICIO DA EXPLORACAO DA MANSAO ---\n");
     printf("Pressione 's' para sair a qualquer momento e iniciar o julgamento.\n");
 
-    while (atual != NULL) {
+    while (atual != NULL) { // Loop de navegação
         printf("\nVoce esta em: **%s**\n", atual->nome);
 
+        // Verifica e coleta a pista, se houver
         if (atual->pista_estatica[0] != '\0') {
             const char* suspeito_da_pista = encontrarSuspeito(tabela_suspeitos, atual->pista_estatica);
             
@@ -371,17 +368,18 @@ PistaNode* explorarSalas(Sala *raiz, PistaNode *pistas_coletadas, HashNode *tabe
             printf("!! PISTA ENCONTRADA !!\n");
             printf("Detalhe: \"%s\"\n", atual->pista_estatica);
             
-            pistas_coletadas = inserirPista(pistas_coletadas, atual->pista_estatica); // Adiciona à BST
+            pistas_coletadas = inserirPista(pistas_coletadas, atual->pista_estatica); 
             
             if (suspeito_da_pista != NULL) {
                 printf("Indicio aponta para: **%s**\n", suspeito_da_pista);
             }
             sleep(1);
             printf("Pista adicionada ao seu caderno de notas.\n");
-            atual->pista_estatica[0] = '\0'; // Limpa a pista da sala
+            atual->pista_estatica[0] = '\0'; // Limpa a pista para evitar coleta duplicada
             printf("----------------------------------------\n");
         }
 
+        // Informa se o caminho acabou (nó-folha)
         if (atual->esquerda == NULL && atual->direita == NULL) {
             printf("\nEste caminho termina aqui. Nao ha mais saidas. Pressione 's' para sair.\n");
         }
@@ -397,6 +395,7 @@ PistaNode* explorarSalas(Sala *raiz, PistaNode *pistas_coletadas, HashNode *tabe
         limparBuffer(); 
         escolha = tolower(escolha);
 
+        // Lógica de navegação
         if (escolha == 's') {
             sleep(1);
             printf("\n--- FIM DA EXPLORACAO ---\n");
@@ -425,30 +424,30 @@ PistaNode* explorarSalas(Sala *raiz, PistaNode *pistas_coletadas, HashNode *tabe
 }
 
 /**
- * @brief Percorre a BST e conta quantas pistas coletadas apontam para o acusado.
+ * @brief Percorre a BST (In-order) e conta quantas pistas coletadas apontam para o acusado.
  *
  * @param raiz O nó raiz da BST.
  * @param acusacao O nome do suspeito sendo acusado.
  * @param contador Ponteiro para a variável onde o total de provas será armazenado.
- * @param tabela_suspeitos A tabela hash para consultar o suspeito da pista.
+ * @param tabela_suspeitos A tabela hash para consultar a associação pista/suspeito.
  */
 void contarProvas(PistaNode *raiz, const char *acusacao, int *contador, HashNode *tabela_suspeitos[]) {
     if (raiz == NULL) return;
     
-    contarProvas(raiz->esquerda, acusacao, contador, tabela_suspeitos);
+    contarProvas(raiz->esquerda, acusacao, contador, tabela_suspeitos); // Esquerda
     
+    // Processa o nó atual: verifica se a pista aponta para o acusado
     const char* suspeito_pista = encontrarSuspeito(tabela_suspeitos, raiz->pista);
     
-    // Compara a pista coletada com o acusado
     if (suspeito_pista != NULL && strcmp(suspeito_pista, acusacao) == 0) {
-        (*contador)++;
+        (*contador)++; // Incrementa o contador através do ponteiro
     }
     
-    contarProvas(raiz->direita, acusacao, contador, tabela_suspeitos);
+    contarProvas(raiz->direita, acusacao, contador, tabela_suspeitos); // Direita
 }
 
 /**
- * @brief Conduz a fase de julgamento final e verifica as provas.
+ * @brief Conduz a fase de julgamento final e verifica se há provas suficientes (>= 2).
  *
  * @param pistas_coletadas A raiz da BST de pistas coletadas.
  * @param tabela_suspeitos A tabela hash para consultar a associação pista/suspeito.
@@ -477,19 +476,22 @@ void verificarSuspeitoFinal(PistaNode *pistas_coletadas, HashNode *tabela_suspei
     sleep(1);
     printf("\nCom base nas suas descobertas, quem voce acusa? (Nome do Suspeito): ");
     
+    // Leitura da acusação (usa fgets para ler nomes com espaços)
     if (fgets(acusacao, MAX_STR, stdin) == NULL) {
         fprintf(stderr, "Erro na leitura da acusacao.\n");
         return;
     }
-    acusacao[strcspn(acusacao, "\n")] = '\0'; // Remove o '\n'
+    acusacao[strcspn(acusacao, "\n")] = '\0'; // Remove o caractere de nova linha
 
-    contarProvas(pistas_coletadas, acusacao, &contagem_provas, tabela_suspeitos); // Conta as provas
+    // Conta as provas usando a função recursiva
+    contarProvas(pistas_coletadas, acusacao, &contagem_provas, tabela_suspeitos);
 
     sleep(1.5);
     printf("\n=> O Detetive acusa: **%s**\n", acusacao);
     printf("=> Pistas encontradas contra o acusado: **%d**\n", contagem_provas);
 
-    if (contagem_provas >= 2) { // Critério de vitória: 2 ou mais provas
+    // Veredito (Critério: Pelo menos duas pistas)
+    if (contagem_provas >= 2) { 
         sleep(2);
         printf("\n[ V E R E D I T O: C U L P A D O ]\n");
         sleep(1);
@@ -507,33 +509,32 @@ void verificarSuspeitoFinal(PistaNode *pistas_coletadas, HashNode *tabela_suspei
 // --- Função Principal (main) com Loop de Repetição ---
 
 /**
- * @brief Inicializa o programa, contém o loop principal de repetição e gerencia a alocação de memória.
+ * @brief Inicializa o programa, contém o loop principal de repetição e gerencia a alocação/liberação de memória entre os jogos.
  */
 int main() {
-    char jogar_novamente; // Variável para controlar o loop
+    char jogar_novamente; // Variável de controle do loop principal
 
-    // Mensagem de início (fora do loop, só aparece uma vez)
+    // Mensagem de início (fora do loop)
     printf("========================================\n");
     printf("      ##### ENIGMA STUDIOS ##### \n");
     printf("========================================\n");
     sleep(2);
 
+    // O loop 'do-while' garante que o jogo seja executado pelo menos uma vez
     do {
         // --- 1. CONFIGURAÇÃO DO NOVO JOGO ---
         
-        // A Tabela Hash e a BST de Pistas devem ser re-inicializadas em cada jogo!
-        
-        // a) Inicializa a Tabela Hash com todos os ponteiros nulos
+        // Inicializa a Tabela Hash para o novo jogo
         HashNode *tabela_suspeitos[HASH_SIZE];
         inicializarHash(tabela_suspeitos);
         
-        // b) Monta o Mapa da Mansão (Árvore Binária)
+        // Monta o Mapa da Mansão (cria todos os nós e pistas)
         Sala *hall = montarMapa();
         
-        // c) Popula a Tabela Hash com as associações Pista -> Suspeito
+        // Popula a Tabela Hash com as associações pista-suspeito
         popularHash(tabela_suspeitos);
         
-        // d) Raiz da BST de pistas coletadas (inicia vazia)
+        // A BST de pistas coletadas começa vazia
         PistaNode *pistas_coletadas = NULL;
         
         sleep(1);
@@ -542,37 +543,38 @@ int main() {
         printf("========================================\n");
         sleep(1.5);
         
-        // --- 2. JOGO ---
+        // --- 2. EXECUÇÃO DO JOGO ---
         
-        // Início da Exploração. Retorna a raiz da BST de pistas atualizada.
+        // Explora as salas e coleta as pistas
         pistas_coletadas = explorarSalas(hall, pistas_coletadas, tabela_suspeitos);
 
-        // Julgamento Final
+        // Realiza o julgamento final
         verificarSuspeitoFinal(pistas_coletadas, tabela_suspeitos);
         
-        // --- 3. LIMPEZA E PERGUNTA DE REPETIÇÃO ---
+        // --- 3. LIMPEZA E REPETIÇÃO ---
         
-        // Libera TODA a memória alocada para o jogo atual
+        // Libera a memória alocada para o mapa, pistas e tabela hash do jogo que acabou
         printf("\n--- FIM DA PARTIDA ---\n");
         liberarMapa(hall);
         liberarPistas(pistas_coletadas);
         liberarHash(tabela_suspeitos);
         printf("Memoria do jogo liberada com sucesso.\n");
         
-        // Pergunta se o jogador quer jogar de novo
+        // Pergunta de repetição
         printf("\nDeseja iniciar uma nova investigacao? [s] Sim / [n] Nao: ");
         if (scanf(" %c", &jogar_novamente) != 1) {
-            jogar_novamente = 'n'; // Assume 'não' em caso de erro de leitura
+            jogar_novamente = 'n'; // Assume 'não' em caso de erro
         }
         limparBuffer(); // Limpa o buffer após a leitura
 
-        jogar_novamente = tolower(jogar_novamente);
+        jogar_novamente = tolower(jogar_novamente); // Padroniza a resposta
 
-    } while (jogar_novamente == 's'); // O loop continua enquanto a escolha for 's'
+    } while (jogar_novamente == 's'); // Continua se a resposta for 's'
 
+    // Mensagem final
     printf("\n========================================\n");
     printf("  Obrigado por jogar! Voltaremos em breve.\n");
     printf("========================================\n");
 
-    return 0;
+    return 0; // Encerra o programa
 }
