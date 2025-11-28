@@ -4,7 +4,7 @@
 #include <unistd.h> //biblioteca para manipulaçao do tempo(sleep), simula tempo de espera
 #include <stdlib.h> //Inclui a biblioteca stdlib.h, que contém funções gerais, como atoi 
 //(para converter uma string para um inteiro).
-#include <stdarg.h>//paa lidar com a manipulação de argumentos variaveis
+#include <stdarg.h>//para lidar com a manipulação de argumentos variaveis
 #include <stdlib.h> // Biblioteca padrão de funções gerais (rand, srand)
 #include <string.h> // Adicionado: Inclui a biblioteca string.h para usar strcmp()
 
